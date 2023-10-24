@@ -7,6 +7,44 @@ import axios from "axios";
 // ローカルに準備したモックサーバのURL
 const todoDataUrl = "http://localhost:3100/todos";
 
+// TodoTitleコンポーネント
+// 見出しタグがh1,h2の場合の条件分岐を作成
+// 親コンポーネントからtitle,asをpropsとして受け取る
+const TodoTitle = ({ title, as }) => {
+  if (as === "h1") {
+    return <h1>{title}</h1>;
+  } else if (as === "h2") {
+    return <h2>{title}</h2>;
+  } else {
+    return <p>{title}</p>;
+  }
+};
+
+// TodoItemコンポーネント
+// 親コンポーネントからtodoをpropsとして受け取る
+const TodoItem = ({ todo }) => {
+  return (
+    <li>
+      {/* TODOの内容 */}
+      {todo.content}
+      <button>{todo.done ? "未完了リストへ" : "完了リストへ"}</button>
+      <button>削除</button>
+    </li>
+  );
+};
+
+// TodoListコンポーネント
+// 親コンポーネントからtodoListをpropsとして受け取る
+const TodoList = ({ todoList }) => {
+  return (
+    <ul>
+      {todoList.map((todo) => {
+        return <TodoItem todo={todo} key={todo.id} />;
+      })}
+    </ul>
+  );
+};
+
 function App() {
   // todoListは現在のTODOの状態、初期値に空配列をセット
   const [todoList, setTodoList] = useState([]);
@@ -44,43 +82,13 @@ function App() {
 
   return (
     <>
-      <h1>TODO進捗管理</h1>
+      <TodoTitle title="TODO進捗管理" as="h1" />
       <textarea />
       <button>TODOを追加</button>
-      <h2>未完了TODOリスト</h2>
-      <ul>
-        {inCompletedList.map((todo) => {
-          return (
-            <li key={todo.id}>
-              {todo.content}
-              <button>{todo.done ? "未完了リストへ" : "完了リストへ"}</button>
-              <button>削除</button>
-            </li>
-          );
-        })}
-      </ul>
-      <h2>完了TODOリスト</h2>
-      <ul>
-        {completedList.map((todo) => {
-          return (
-            <li key={todo.id}>
-              {todo.content}
-              <button>{todo.done ? "未完了リストへ" : "完了リストへ"}</button>
-              <button>削除</button>
-            </li>
-          );
-        })}
-      </ul>
-      {/* <h2>TODOリスト</h2>
-      <ul>
-        {todoList.map((todo) => {
-          return (
-            <li key={todo.id}>
-              {todo.content}({todo.done ? "完了" : "未完了"})
-            </li>
-          );
-        })}
-      </ul> */}
+      <TodoTitle title="未完了TODOリスト" as="h2" />
+      <TodoList todoList={inCompletedList} />
+      <TodoTitle title="完了TODOリスト" as="h2" />
+      <TodoList todoList={completedList} />
     </>
   );
 }
