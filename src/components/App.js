@@ -28,13 +28,50 @@ function App() {
 
   console.log("TODOリスト:", todoList);
 
+  // filterで「TODOの状態が未完了」の要素を持つ新しい配列を作成
+  const inCompletedList = todoList.filter((todo) => {
+    return !todo.done;
+  });
+
+  console.log("未完了TODOリスト:", inCompletedList);
+
+  // filterで「TODOの状態が完了」の要素を持つ新しい配列を作成
+  const completedList = todoList.filter((todo) => {
+    return todo.done;
+  });
+
+  console.log("完了TODOリスト:", completedList);
+
   return (
     <>
       <h1>TODO進捗管理</h1>
       <textarea />
       <button>TODOを追加</button>
-
-      <h2>TODOリスト</h2>
+      <h2>未完了TODOリスト</h2>
+      <ul>
+        {inCompletedList.map((todo) => {
+          return (
+            <li key={todo.id}>
+              {todo.content}
+              <button>{todo.done ? "未完了リストへ" : "完了リストへ"}</button>
+              <button>削除</button>
+            </li>
+          );
+        })}
+      </ul>
+      <h2>完了TODOリスト</h2>
+      <ul>
+        {completedList.map((todo) => {
+          return (
+            <li key={todo.id}>
+              {todo.content}
+              <button>{todo.done ? "未完了リストへ" : "完了リストへ"}</button>
+              <button>削除</button>
+            </li>
+          );
+        })}
+      </ul>
+      {/* <h2>TODOリスト</h2>
       <ul>
         {todoList.map((todo) => {
           return (
@@ -43,7 +80,7 @@ function App() {
             </li>
           );
         })}
-      </ul>
+      </ul> */}
     </>
   );
 }
