@@ -40,6 +40,19 @@ const TodoList = ({ todoList }) => {
   );
 };
 
+// TodoAddコンポーネント
+// 親コンポーネントからinputEl,handleAddTodoListItemをpropsとして受け取る
+const TodoAdd = ({ inputEl, handleAddTodoListItem }) => {
+  return (
+    <>
+      {/* useRefで作成したRefオブジェクトをref属性に指定し、DOMを参照*/}
+      <textarea ref={inputEl} />
+      {/* ボタンをクリックするとhandleAddTodoListItem関数を実行*/}
+      <button onClick={handleAddTodoListItem}>TODOを追加</button>
+    </>
+  );
+};
+
 function App() {
   // カスタムフックで作成したtodoListとaddTodoListItemを利用
   const { todoList, addTodoListItem } = useTodo();
@@ -47,7 +60,7 @@ function App() {
   // useRefでrefオブジェクトを作成(TODO入力フォームで利用)
   const inputEl = useRef(null);
 
-  // TODO乳力フォームで入力された文字列を新しいTODOに登録するための関数を宣言
+  // TODO入力フォームで入力された文字列を新しいTODOに登録するための関数を宣言
   const handleAddTodoListItem = () => {
     // 何も入力されていない場合にクリックしても何も返さない
     if (inputEl.current.value === "") return;
@@ -78,10 +91,10 @@ function App() {
   return (
     <>
       <TodoTitle title="TODO進捗管理" as="h1" />
-      {/* useRefで作成したRefオブジェクトをref属性に指定し、DOMを参照*/}
-      <textarea ref={inputEl} />
-      {/* ボタンをクリックするとhandleAddTodoListItem関数を実行*/}
-      <button onClick={handleAddTodoListItem}>TODOを追加</button>
+      <TodoAdd
+        inputEl={inputEl}
+        handleAddTodoListItem={handleAddTodoListItem}
+      />
       <TodoTitle title="未完了TODOリスト" as="h2" />
       <TodoList todoList={inCompletedList} />
       <TodoTitle title="完了TODOリスト" as="h2" />
