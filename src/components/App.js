@@ -16,25 +16,47 @@ const TodoTitle = ({ title, as }) => {
 };
 
 // TodoItemコンポーネント
-// 親コンポーネントからtodoをpropsとして受け取る
-const TodoItem = ({ todo }) => {
+// 親コンポーネントからtodo, toggleTodoListItemStatus, deleteTodoListItemをpropsとして受け取る
+const TodoItem = ({ todo, toggleTodoListItemStatus, deleteTodoListItem }) => {
+  // toggleTodoListItemStatusを実行する関数を宣言
+  const handleToggleTodoListItemStatus = () => {
+    toggleTodoListItemStatus(todo.id, todo.done);
+  };
+
+  // deleteTodoListItemを実行する関数を宣言
+  const handleDeleteTodoListItem = () => {
+    deleteTodoListItem(todo.id);
+  };
   return (
     <li>
       {/* TODOの内容 */}
       {todo.content}
-      <button>{todo.done ? "未完了リストへ" : "完了リストへ"}</button>
-      <button>削除</button>
+      <button onClick={handleToggleTodoListItemStatus}>
+        {todo.done ? "未完了リストへ" : "完了リストへ"}
+      </button>
+      <button onClick={handleDeleteTodoListItem}>削除</button>
     </li>
   );
 };
 
 // TodoListコンポーネント
 // 親コンポーネントからtodoListをpropsとして受け取る
-const TodoList = ({ todoList }) => {
+const TodoList = ({
+  todoList,
+  toggleTodoListItemStatus,
+  deleteTodoListItem,
+}) => {
   return (
     <ul>
       {todoList.map((todo) => {
-        return <TodoItem todo={todo} key={todo.id} />;
+        return (
+          <TodoItem
+            todo={todo}
+            key={todo.id}
+            toggleTodoListItemStatus={toggleTodoListItemStatus}
+            deleteTodoListItem={deleteTodoListItem}
+          />
+        );
       })}
     </ul>
   );
@@ -54,8 +76,13 @@ const TodoAdd = ({ inputEl, handleAddTodoListItem }) => {
 };
 
 function App() {
-  // カスタムフックで作成したtodoListとaddTodoListItemを利用
-  const { todoList, addTodoListItem } = useTodo();
+  // カスタムフックで作成したtodoList,addTodoListItem,toggleTodoListItemStatus,deleteTodoListItemを利用
+  const {
+    todoList,
+    addTodoListItem,
+    toggleTodoListItemStatus,
+    deleteTodoListItem,
+  } = useTodo();
 
   // useRefでrefオブジェクトを作成(TODO入力フォームで利用)
   const inputEl = useRef(null);
@@ -71,8 +98,6 @@ function App() {
     addTodoListItem(inputEl.current.value);
     inputEl.current.value = "";
   };
-
-  console.log("TODOリスト".todoList);
 
   // filterで「TODOの状態が未完了」の要素を持つ新しい配列を作成
   const inCompletedList = todoList.filter((todo) => {
@@ -96,9 +121,17 @@ function App() {
         handleAddTodoListItem={handleAddTodoListItem}
       />
       <TodoTitle title="未完了TODOリスト" as="h2" />
-      <TodoList todoList={inCompletedList} />
+      <TodoList
+        todoList={inCompletedList}
+        toggleTodoListItemStatus={toggleTodoListItemStatus}
+        deleteTodoListItem={deleteTodoListItem}
+      />
       <TodoTitle title="完了TODOリスト" as="h2" />
-      <TodoList todoList={completedList} />
+      <TodoList
+        todoList={completedList}
+        toggleTodoListItemStatus={toggleTodoListItemStatus}
+        deleteTodoListItem={deleteTodoListItem}
+      />
     </>
   );
 }
