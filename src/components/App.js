@@ -38,14 +38,10 @@ function App() {
     return !todo.done;
   });
 
-  console.log("未完了TODOリスト:", inCompletedList);
-
   // filterで「TODOの状態が完了」の要素を持つ新しい配列を作成
   const completedList = todoList.filter((todo) => {
     return todo.done;
   });
-
-  console.log("完了TODOリスト:", completedList);
 
   return (
     <Container centerContent p={{ base: "4", md: "6" }} maxWidth={"3xl"}>
