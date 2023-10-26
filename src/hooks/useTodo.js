@@ -14,14 +14,14 @@ export const useTodo = () => {
   // useEffectでコンポーネントのマウント前後に処理を実行
   // モックサーバからTODOデータを取得するgetAllTodosDataを実行
   useEffect(() => {
-    todoData.getAllTodosData.then((todo) => {
+    todoData.getAllTodosData().then((todo) => {
       // todoListの状態を更新
-      setTodoList(todo);
+      setTodoList([...todo].reverse());
     });
   }, []);
 
   // todoListItemのdoneを反転させ、更新する関数を宣言
-  const toggleTodoListItemStatus = (item, id) => {
+  const toggleTodoListItemStatus = (id, done) => {
     // findメソッドでdoneを反転させたいtodoListItemのidを見つけ、条件に一致するtodoItemを返す
     const todoItem = todoList.find((item) => item.id === id);
 
@@ -31,7 +31,7 @@ export const useTodo = () => {
     // 指定されたidのTODOをupdateTodoDataで更新したら、todoListの状態も更新
     todoData.updateTodoData(id, newTodoItem).then((updatedTodo) => {
       // 新しい配列を作成
-      const newTodoList = todoList.map((updatedTodo) => {
+      const newTodoList = todoList.map((item) => {
         // idが異なる場合、todoListから取り出したitemをそのまま返す
         // idが同じ場合、doneを反転させたupdatedTodoを返す
         return item.id !== updatedTodo.id ? item : updatedTodo;
@@ -57,7 +57,7 @@ export const useTodo = () => {
   };
 
   // TODOを削除する関数を宣言
-  const deleteTodoListItem = () => {
+  const deleteTodoListItem = (id) => {
     // deleteTodoListを利用して指定したidのTODOを削除したら、todoListの状態も更新
     todoData.deleteTodoData(id).then((deleteListItemId) => {
       const newTodoList = todoList.filter(
