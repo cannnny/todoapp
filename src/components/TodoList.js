@@ -1,4 +1,7 @@
 // TODOをリスト化するコンポーネント
+
+import { List } from "@chakra-ui/react";
+
 import { TodoTitle } from "./TodoTitle";
 import { TodoItem } from "./TodoItem";
 
@@ -9,14 +12,15 @@ export const TodoList = ({
   deleteTodoListItem,
   title,
   as,
+  fontSize,
 }) => {
   return (
     <>
       {/* todoListの配列の中身が空の場合、見出しとTODOリストの両方を表示させない */}
       {todoList.length !== 0 && (
         <>
-          <TodoTitle title={title} as={as} />
-          <ul>
+          <TodoTitle title={title} as={as} mt="12" fontSize={fontSize} />
+          <List w="full">
             {todoList.map((todo) => {
               return (
                 <TodoItem
@@ -27,7 +31,7 @@ export const TodoList = ({
                 />
               );
             })}
-          </ul>
+          </List>
         </>
       )}
     </>
