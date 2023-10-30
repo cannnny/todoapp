@@ -3,7 +3,7 @@
 import axios from "axios";
 
 // ローカルに準備したモックサーバのURL
-const todoDataUrl = "http://localhost:3100/todos";
+const todoDataUrl = "https://json-server-vercel-five-omega.vercel.app/todos";
 
 // 取得 get(URL, [params:queries])
 // サーバ上のすべてのTODOを取得する関数を宣言し、他ファイルでも利用できるようエクスポート
