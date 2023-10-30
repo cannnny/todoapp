@@ -46,7 +46,7 @@ export const TodoItem = ({
           icon={<DeleteIcon />}
           variant="unstyled"
           aria-label="delete"
-          onclick={handleDeleteTodoListItem}
+          onClick={handleDeleteTodoListItem}
         />
       </Flex>
     </List>
